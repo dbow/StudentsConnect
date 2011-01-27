@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+	<style>
+	.input {
+		display:block;
+	}
+	#userbox {
+		border:5px ridge green;
+	}
+	</style>
+	
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script src='/_ah/channel/jsapi'></script>
+
+    <script type="text/javascript">	
+	$("#connect2").click(function () {
+	      var id = generateID();
+	      $("id").val(id);
+	      alert('test');
+
+		function generateID () {
+		    var text = "";
+		    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		    for( var i=0; i < 5; i++ )
+		        text += possible.charAt(Math.floor(Math.random() * possible.length));
+		    return text;
+		    console.log('test2');
+		}
+    });
+    </script>
+  </head>
+  <body>
+	{% if token %}
+	<h2>Available Users:</h2>
+	<div id="userbox">
+    <ul id="user_list">
+	  {% for connected_user in connected_users %}
+	    <li id="{{connected_user.id}}">{{connected_user.name}} {{connected_user.school}}</li>
+	  {% endfor %}
+	</ul>
+	</div>
+	{% endif %}
+	<form id="connect_form" action="" method="post">
+		Name: <input type="text" name="name" /><br />
+		School: <input type="text" name="school" /><br />
+		Languages spoken <br />
+			<input type="checkbox" name="languages" value="English"/>English
+			<input type="checkbox" name="languages" value="Spanish"/>Spanish
+			<input type="checkbox" name="languages" value="French"/>French
+			<input type="checkbox" name="languages" value="German"/>German
+			<input type="checkbox" name="languages" value="Italian"/>Italian
+			<input type="checkbox" name="languages" value="Dutch"/>Dutch
+			<input type="checkbox" name="languages" value="Japanese"/>Japanese
+			<input type="checkbox" name="languages" value="Chinese"/>Chinese
+			<br />	
+		Allow other connected users to see you?<br />
+		<input type="radio" name="available" value="true">yes
+		<input type="radio" name="available" value="false">no
+		<br />
+		<input type="hidden" id="id">
+		<input type="submit" id="connect" value="Connect" />
+	</form>	
+	<button id="connect2">
+  </body>
+</html>
