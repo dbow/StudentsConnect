@@ -37,6 +37,7 @@ class MainHandler(webapp.RequestHandler):
       if created_user:
         connected_users = ConnectedUser.all().fetch(50)
         token=id
+        
     template_values = {
           'connected_users': connected_users,
           'token': token,
@@ -60,6 +61,14 @@ class MainHandler(webapp.RequestHandler):
           new_user.available=False
       new_user.put()
       self.redirect('/?id=' + client_id)
+      
+class UpdateHandler(webapp.RequestHandler):
+    def post(self):
+        gameUpdate = {
+            'name': 'John'
+        }
+        channel.send_message('1' , '{"msg":"hello"}')
+        self.response.out.write('{"msg":"hello"}')
 
 class TokenRequestHandler(webapp.RequestHandler):
   def post(self):
@@ -70,6 +79,7 @@ class TokenRequestHandler(webapp.RequestHandler):
 
 def main():
   application = webapp.WSGIApplication([('/', MainHandler),
+                            ('/update', UpdateHandler),
                           ('/requesttoken', TokenRequestHandler)],
                                      debug=True)
   util.run_wsgi_app(application)

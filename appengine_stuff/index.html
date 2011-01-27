@@ -18,14 +18,6 @@
 	  {% endfor %}
 	</ul>
 	</div>
-	<script>
-		channel = new goog.appengine.Channel('{{ token }}');
-	  socket = channel.open();
-	  socket.onopen = onOpened;
-	  socket.onmessage = onMessage;
-	  socket.onerror = onError;
-	  socket.onclose = onClose;
-	</script>
 	{% endif %}
 	<form id="connect_form" action="" method="post">
 		Name: <input type="text" name="name" /><br />
@@ -47,7 +39,7 @@
 		<input type="hidden" name="id" id="uid" />
 		<input type="submit" id="connect" value="Connect" />
 	</form>	
-	<button id="connect2" />
+	<button id="sc-test">Test</button>
 		
 		
    <script type="text/javascript"

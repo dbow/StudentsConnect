@@ -16,12 +16,34 @@ function generateID() {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     
-    return text;
+    return '1';
+    //return text;
 }
 
 $("#connect_form").submit(function (event) {
     var id = generateID();
     $("#uid").val(id);
+});
+
+
+var channel = new goog.appengine.Channel('{{ token }}'),
+    socket = channel.open();
+    
+socket.onopen = function () {
+};
+socket.onmessage = function (data) {
+    alert('hi');
+    SC.log(data);
+};
+socket.onerror = function () {
+    alert('error');
+};
+socket.onclose = function () {};
+
+$("#sc-test").click(function () {
+    $.post('/update', {}, function (ob) {
+        SC.log(ob);
+    }, 'json');
 });
 
 }(window, jQuery));
