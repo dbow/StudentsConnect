@@ -7,11 +7,20 @@
 	{% if token %}
 	<h2>Available Users:</h2>
 	<div id="userbox">
+<<<<<<< HEAD
         <ul id="user_list">
     	  {% for connected_user in connected_users %}
     	    <li id="{{connected_user.id}}">{{connected_user.name}} {{connected_user.school}}</li>
     	  {% endfor %}
     	</ul>
+=======
+    <ul id="user_list">
+	  {% for connected_user in connected_users %}
+          <li id="{{connected_user.id}}">{{connected_user.name}} {{connected_user.school}}
+               <br/>Speaks: {{connected.languages}}</li>
+	  {% endfor %}
+	</ul>
+>>>>>>> 66f812c1cd2e9b60561760305d65378049c25090
 	</div>
 	{% endif %}
 	<form id="connect_form" action="" method="post">
