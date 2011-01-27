@@ -25,7 +25,7 @@
 				     EmailValidator.validateEmail(email_validator, email_address.text, 'text').pop() == null}"/>
 		<mx:Button label="End Chat" click="close()" enabled="{nsPub != null &amp;&amp; nsPlay != null}"/>
 	</mx:HBox>
-	<mx:Text text="" id="chat_session" color="#C5C5C5"/>
+	<mx:Text text="" id="chat_session" color="#C5C5C5" selectable="true" />
 	
 	<mx:HBox id="VideoArea">
 		<mx:VideoDisplay id="playVideoBox"
@@ -52,8 +52,8 @@
 	
 	<mx:HBox>
 		<mx:Label text="Select your camera" fontFamily="Arial" fontWeight="bold" fontSize="16" color="#00B5E5"/>
-		<mx:Panel id="panel" title="Installed cameras:" status="{list.dataProvider.length} camera(s)">
-	    	<mx:List id="list" dataProvider="{Camera.names}" width="120" height="60" />
+		<mx:Panel id="panel" title="Installed cameras:" status="{camerasList.dataProvider.length} camera(s)">
+	    	<mx:List id="camerasList" dataProvider="{Camera.names}" width="120" height="60" itemClick="selectCamera()" />
 		</mx:Panel>
 	</mx:HBox>
 	
@@ -107,7 +107,7 @@
 				
 				if (Camera.names.length == 0) {
 					Alert.show("You do not have any cameras attached.");
-					list.enabled = false;
+					camerasList.enabled = false;
 				}
 				else {
 					var varName:String;
@@ -144,6 +144,12 @@
 				}
 			}
 			
+			private function selectCamera():void {
+				var camera:Camera = Camera.getCamera(camerasList.selectedIndex.toString());
+				publishVideoBox.attachCamera(camera);
+				nsPub.attachCamera(camera);
+			}
+			
 			private function publish(name:String):void {
 				if (nsPub == null && nc != null && nc.connected) {
 					nsPub = new NetStream(nc);
@@ -152,10 +158,7 @@
 					nsPub.addEventListener(AsyncErrorEvent.ASYNC_ERROR, streamErrorHandler, false, 0, true);
 
 					nsPub.publish(name);
-					publishVideoBox.attachCamera(Camera.getCamera());
-					nsPub.attachCamera(Camera.getCamera());
 					nsPub.attachAudio(Microphone.getMicrophone(-1));
-
 					publishVideo.attachNetStream(nsPub);
 				}
 			}
