@@ -33,7 +33,7 @@ class MainHandler(webapp.RequestHandler):
     token = None
     id=self.request.get("id")
     if id:
-      created_user = ConnectedUser.filter("chatsession =", id)
+      created_user = ConnectedUser.all().filter("chatsession=",id)
       if created_user:
         connected_users = ConnectedUser.all().fetch(50)
         token=id
