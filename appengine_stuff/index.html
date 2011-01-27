@@ -17,6 +17,7 @@
 	  {% endfor %}
 	</ul>
 	</div>
+        <br/><br/><br/>
 	<script>
 		channel = new goog.appengine.Channel('{{ token }}');
 	  socket = channel.open();
@@ -46,8 +47,8 @@
 		<input type="hidden" name="id" id="uid" />
 		<input type="submit" id="connect" value="Connect" />
 	</form>	
-	<button id="connect2" />
-		
+        <br/>	
+        <br/>
 		
    <script type="text/javascript"
         src="http://www.google.com/jsapi"></script>
@@ -74,6 +75,8 @@
  }
 
 </script>
+
+
 <div id="translator">
 Translator:
 <textarea id="query" rows="4" cols="45"></textarea>
