@@ -14,7 +14,9 @@
                 <br/>Speaks: 
           {% for language in connected_user.languages %}
           {{language}} and 
-          {% endfor %} </li>
+          {% endfor %}
+          Privacy: {{connected_user.available}} 
+          </li>
 	  {% endfor %}
 	</ul>
 	</div>
