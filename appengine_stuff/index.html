@@ -14,10 +14,23 @@
                 <br/>Speaks: 
           {% for language in connected_user.languages %}
           {{language}} and 
-          {% endfor %} </li>
+          {% endfor %}
+          <br/>Privacy: {{connected_user.available}} 
+          <br/>
+          <br/>
+          </li>
 	  {% endfor %}
 	</ul>
 	</div>
+        <br/><br/><br/>
+	<script>
+		channel = new goog.appengine.Channel('{{ token }}');
+	  socket = channel.open();
+	  socket.onopen = onOpened;
+	  socket.onmessage = onMessage;
+	  socket.onerror = onError;
+	  socket.onclose = onClose;
+	</script>
 	{% endif %}
 	<form id="connect_form" action="" method="post">
 		Name: <input type="text" name="name" /><br />
@@ -30,7 +43,7 @@
 			<input type="checkbox" name="languages" value="Italian"/>Italian
 			<input type="checkbox" name="languages" value="Dutch"/>Dutch
 			<input type="checkbox" name="languages" value="Japanese"/>Japanese
-			<input type="checkbox" name="languages" value="Chinese"/>Chinese
+                        <!-- Chenger says no		<input type="checkbox" name="languages" value="Chinese"/>Chinese  -->
 			<br />	
 		Allow other connected users to see you?<br />
 		<input type="radio" name="available" value="true" />yes
@@ -39,8 +52,13 @@
 		<input type="hidden" name="id" id="uid" />
 		<input type="submit" id="connect" value="Connect" />
 	</form>	
+<<<<<<< HEAD
 	<button id="sc-test">Test</button>
 		
+=======
+        <br/>	
+        <br/>
+>>>>>>> 2565c1da7df0be1e9eb60ebbbc58afb55006f520
 		
    <script type="text/javascript"
         src="http://www.google.com/jsapi"></script>
@@ -67,6 +85,8 @@
  }
 
 </script>
+
+
 <div id="translator">
 Translator:
 <textarea id="query" rows="4" cols="45"></textarea>

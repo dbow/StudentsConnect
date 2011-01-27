@@ -26,7 +26,7 @@ $("#connect_form").submit(function (event) {
 });
 
 
-var channel = new goog.appengine.Channel('{{ token }}'),
+var channel = new goog.appengine.Channel(),
     socket = channel.open();
     
 socket.onopen = function () {
