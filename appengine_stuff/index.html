@@ -1,34 +1,7 @@
-<!doctype html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
   <head>
-	<style>
-	.input {
-		display:block;
-	}
-	#userbox {
-		border:5px ridge green;
-	}
-	</style>
-	
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script src='/_ah/channel/jsapi'></script>
-
-    <script type="text/javascript">	
-	$("#connect2").click(function () {
-	      var id = generateID();
-	      $("id").val(id);
-	      alert('test');
-
-		function generateID () {
-		    var text = "";
-		    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-		    for( var i=0; i < 5; i++ )
-		        text += possible.charAt(Math.floor(Math.random() * possible.length));
-		    return text;
-		    console.log('test2');
-		}
-    });
-    </script>
+	<link type="text/css" rel="stylesheet" href="static/css/main.css" />
   </head>
   <body>
 	{% if token %}
@@ -44,6 +17,14 @@
 	  {% endfor %}
 	</ul>
 	</div>
+	<script>
+		channel = new goog.appengine.Channel('{{ token }}');
+	  socket = channel.open();
+	  socket.onopen = onOpened;
+	  socket.onmessage = onMessage;
+	  socket.onerror = onError;
+	  socket.onclose = onClose;
+	</script>
 	{% endif %}
 	<form id="connect_form" action="" method="post">
 		Name: <input type="text" name="name" /><br />
@@ -59,13 +40,13 @@
 			<input type="checkbox" name="languages" value="Chinese"/>Chinese
 			<br />	
 		Allow other connected users to see you?<br />
-		<input type="radio" name="available" value="true">yes
-		<input type="radio" name="available" value="false">no
+		<input type="radio" name="available" value="true" />yes
+		<input type="radio" name="available" value="false" />no
 		<br />
-		<input type="hidden" name="id" value="abc">
+		<input type="hidden" name="id" id="uid" />
 		<input type="submit" id="connect" value="Connect" />
 	</form>	
-	<button id="connect2">
+	<button id="connect2" />
 		
 		
    <script type="text/javascript"
@@ -116,5 +97,8 @@ Translator:
 <option value="ro">română</option>
 </select>
 </div>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script src='/_ah/channel/jsapi'></script>
+    <script type="text/javascript" src="/static/js/sc.js"></script>
   </body>
 </html>
