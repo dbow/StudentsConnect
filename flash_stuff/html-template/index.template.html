@@ -18,7 +18,7 @@ Learn more about Flex at http://flex.org
 <link rel="stylesheet" type="text/css" href="history/history.css" />
 <!--  END Browser History required section -->
 
-<title>${title}</title>
+<title></title>
 <script src="AC_OETags.js" language="javascript"></script>
 
 <!--  BEGIN Browser History required section -->
@@ -26,24 +26,55 @@ Learn more about Flex at http://flex.org
 <!--  END Browser History required section -->
 
 <style>
-body { margin: 0px; overflow:hidden }
+@font-face {
+      font-family: "DIN-Bold";
+      src: url("http://www.brutelabs.org/files/fonts/DIN-Bold.ttf");
+    }
+@font-face {
+      font-family: "DIN-Reg";
+      src: url("http://www.brutelabs.org/files/fonts/DIN-Reg.ttf");
+}
+.DIN-Bold { font-family: "DIN-Bold", serif }
+.DIN-Reg { font-family: "DIN-Reg", serif }
+body { 
+	margin: 0px; 
+	overflow:hidden;
+	background: #00B5E5;
+	color: #FFFFFF;
+	text-align: center;
+	font-family: "DIN-Reg", serif;
+	 }
+h1 {
+	font-family: "DIN-Bold", serif;
+}
+a:link {
+	color:#FFFFFF;
+	text-decoration:underline;
+	}
+.translator {
+	display:block;
+	position:center;
+}
 </style>
 <script language="JavaScript" type="text/javascript">
 <!--
 // -----------------------------------------------------------------------------
 // Globals
 // Major version of Flash required
-var requiredMajorVersion = ${version_major};
+var requiredMajorVersion = 9;
 // Minor version of Flash required
-var requiredMinorVersion = ${version_minor};
+var requiredMinorVersion = 0;
 // Minor version of Flash required
-var requiredRevision = ${version_revision};
+var requiredRevision = 124;
 // -----------------------------------------------------------------------------
 // -->
 </script>
 </head>
 
 <body scroll="no">
+
+<h1>studentsConnect</h1>
+<h4>a <a href="www.brutelabs.org">BRUTE LABS</a> application</h4>
 <script language="JavaScript" type="text/javascript">
 <!--
 // Version check for the Flash Player that has the ability to start Player Product Install (6.0r65)
@@ -52,6 +83,17 @@ var hasProductInstall = DetectFlashVer(6, 0, 65);
 // Version check based upon the values defined in globals
 var hasRequestedVersion = DetectFlashVer(requiredMajorVersion, requiredMinorVersion, requiredRevision);
 
+// Get URL variable for session ID if exists
+var session_id = window.location.href.split("id=")[1];
+if (session_id) {
+	flash_var = "id=" + session_id;
+}
+else {
+	flash_var = "NoID=TRUE";
+}
+function getVars () {
+	return flash_var;
+}
 if ( hasProductInstall && !hasRequestedVersion ) {
 	// DO NOT MODIFY THE FOLLOWING FOUR LINES
 	// Location visited after installation is complete if installation is required
@@ -63,13 +105,13 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 	AC_FL_RunContent(
 		"src", "playerProductInstall",
 		"FlashVars", "MMredirectURL="+MMredirectURL+'&MMplayerType='+MMPlayerType+'&MMdoctitle='+MMdoctitle+"",
-		"width", "${width}",
-		"height", "${height}",
+		"width", "650",
+		"height", "500",
 		"align", "middle",
-		"id", "${application}",
+		"id", "studentsconnect",
 		"quality", "high",
-		"bgcolor", "${bgcolor}",
-		"name", "${application}",
+		"bgcolor", "#869ca7",
+		"name", "studentsconnect",
 		"allowScriptAccess","sameDomain",
 		"type", "application/x-shockwave-flash",
 		"pluginspage", "http://www.adobe.com/go/getflashplayer"
@@ -78,14 +120,15 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 	// if we've detected an acceptable version
 	// embed the Flash Content SWF when all tests are passed
 	AC_FL_RunContent(
-			"src", "${swf}",
-			"width", "${width}",
-			"height", "${height}",
+			"src", "studentsconnect",
+			"FlashVars", flash_var,
+			"width", "650",
+			"height", "500",
 			"align", "middle",
-			"id", "${application}",
+			"id", "studentsconnect",
 			"quality", "high",
-			"bgcolor", "${bgcolor}",
-			"name", "${application}",
+			"bgcolor", "#869ca7",
+			"name", "studentsconnect",
 			"allowScriptAccess","sameDomain",
 			"type", "application/x-shockwave-flash",
 			"pluginspage", "http://www.adobe.com/go/getflashplayer"
@@ -100,14 +143,16 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 </script>
 <noscript>
   	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
-			id="${application}" width="${width}" height="${height}"
+			id="studentsconnect" width="650" height="500"
 			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
-			<param name="movie" value="${swf}.swf" />
+			<param name="movie" value="studentsconnect.swf" />
 			<param name="quality" value="high" />
-			<param name="bgcolor" value="${bgcolor}" />
+			<param name="bgcolor" value="#869ca7" />
 			<param name="allowScriptAccess" value="sameDomain" />
-			<embed src="${swf}.swf" quality="high" bgcolor="${bgcolor}"
-				width="${width}" height="${height}" name="${application}" align="middle"
+			<param name=FlashVars value="getVars()">
+			<embed src="studentsconnect.swf" quality="high" bgcolor="#869ca7"
+			    FlashVars="id=2"
+				width="100%" height="50%" name="studentsconnect" align="middle"
 				play="true"
 				loop="false"
 				quality="high"
@@ -117,5 +162,60 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 			</embed>
 	</object>
 </noscript>
+
+<script language="JavaScript" type="text/javascript">
+	function sendToJavaScript(value) {
+		alert("The value from ActionScript is: " + value);
+	}
+</script>
+
+<script type="text/javascript"
+        src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+
+ // Initialize version 1.0 of Google AJAX API
+ google.load("language", "1");
+
+ function translate(lang) {
+   var source = document.getElementById("query").value;
+   var len = source.length;
+
+   // Google Language API accepts 500 characters per request 
+   var words = 500;
+
+   for(i=0; i<=(len/words); i++) {
+     google.language.translate (source.substr(i*words, words),
+                 "", lang, function (result) {
+     if (!result.error) {
+	 document.getElementById("query").value = result.translation;
+    } }); }  
+
+  return false;
+ }
+
+</script>
+<div id="translator">
+Translator:
+<textarea id="query" rows="4" cols="45"></textarea>
+
+<select onchange="translate(this.options[this.selectedIndex].value);">
+<option value="en">english</option>
+<option value="de">deutsch</option>
+<option value="pt">português</option>
+<option value="fr">français</option>
+<option value="ja">日本語</option>
+<option value="ar">عَرَبيْ</option>
+<option value="it">italiano</option>
+<option value="ru">pусский</option>
+<option value="po">polski</option>
+<option value="zh-CN">中文</option>
+<option value="es">español</option>
+<option value="ko">한국어</option>
+<option value="nl">nederlands</option>
+<option value="hi">हिन्दी </option>
+<option value="el">Ελληνική</option>
+<option value="ro">română</option>
+</select>
+</div>
 </body>
 </html>

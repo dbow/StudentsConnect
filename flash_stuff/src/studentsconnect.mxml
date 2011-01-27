@@ -53,7 +53,7 @@
 	<mx:HBox>
 		<mx:Label text="Select your camera" fontFamily="Arial" fontWeight="bold" fontSize="16" color="#00B5E5"/>
 		<mx:Panel id="panel" title="Installed cameras:" status="{camerasList.dataProvider.length} camera(s)">
-	    	<mx:List id="camerasList" dataProvider="{Camera.names}" width="120" height="60" itemClick="selectCamera()" />
+	    	<mx:List id="camerasList" dataProvider="{Camera.names}" width="120" height="60" itemClick="selectCamera();" />
 		</mx:Panel>
 	</mx:HBox>
 	
@@ -145,7 +145,7 @@
 			}
 			
 			private function selectCamera():void {
-				Alert.show('this is foolishness');
+				ExternalInterface.call('alert', 'testing JS call from SWF');
 				var camera:Camera = Camera.getCamera(camerasList.selectedIndex.toString());
 				publishVideoBox.attachCamera(camera);
 				nsPub.attachCamera(camera);
