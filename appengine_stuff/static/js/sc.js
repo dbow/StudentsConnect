@@ -16,7 +16,7 @@ function generateID() {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     
-    return '1';
+    return '2';
     //return text;
 }
 
@@ -25,24 +25,27 @@ $("#connect_form").submit(function (event) {
     $("#uid").val(id);
 });
 
+var channel, socket;
 
-var channel = new goog.appengine.Channel(),
+SC.socket = socket;
+
+SC.addToken = function (token) {
+    channel = new goog.appengine.Channel(token);
     socket = channel.open();
     
-socket.onopen = function () {
+    socket.onopen = function () {
+    };
+    socket.onmessage = function (data) {
+        SC.log(data);
+    };
+    socket.onerror = function () {
+        alert('error');
+    };
+    socket.onclose = function () {};
 };
-socket.onmessage = function (data) {
-    alert('hi');
-    SC.log(data);
-};
-socket.onerror = function () {
-    alert('error');
-};
-socket.onclose = function () {};
 
 $("#sc-test").click(function () {
-    $.post('/update', {}, function (ob) {
-        SC.log(ob);
+    $.post('/update', {msg: $("input").val()}, function (ob) {
     }, 'json');
 });
 

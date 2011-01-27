@@ -33,10 +33,10 @@ class MainHandler(webapp.RequestHandler):
     token = None
     id=self.request.get("id")
     if id:
+      token = channel.create_channel(id)
       created_user = ConnectedUser.all().filter("chatsession=",id)
       if created_user:
         connected_users = ConnectedUser.all().fetch(50)
-        token=id
         
     template_values = {
           'connected_users': connected_users,
@@ -50,7 +50,6 @@ class MainHandler(webapp.RequestHandler):
       client_id=self.request.get('id')
       new_user = ConnectedUser()
       new_user.chatsession = client_id
-      token = channel.create_channel(client_id)
       new_user.name=self.request.get('name')
       new_user.school=self.request.get('school')
       new_user.languages = self.request.get('languages', allow_multiple=True)
@@ -67,8 +66,9 @@ class UpdateHandler(webapp.RequestHandler):
         gameUpdate = {
             'name': 'John'
         }
-        channel.send_message('1' , '{"msg":"hello"}')
+        channel.send_message('1' , '{"msg":"' + self.request.get('msg') + '"}')
         self.response.out.write('{"msg":"hello"}')
+
 
 class TokenRequestHandler(webapp.RequestHandler):
   def post(self):
