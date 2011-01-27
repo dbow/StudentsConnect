@@ -38,7 +38,7 @@
 	  {% for connected_user in connected_users %}
           <li id="{{connected_user.id}}">{{connected_user.name}} {{connected_user.school}}
                 <br/>Speaks: 
-          {% for language in connected_user.languages &}
+          {% for language in connected_user.languages %}
           {{language}} and 
           {% endfor %} </li>
 	  {% endfor %}
