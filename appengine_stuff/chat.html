@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>Students Connect</title>
+	<link type="text/css" rel="stylesheet" href="static/css/main.css" />
+  </head>
+  <body>
+		<div id="current_user">
+			<h2> Welcome, {{current_user.name}} </h2>
+		</div>
+		<div id="available_users">
+			<h3>Available Users:</h3>
+	    <ul id="user_list">
+			  {% for connected_user in connected_users %}
+		    	<li> {{connected_user.name}} {{connected_user.school}} </li>
+		      <li> Speaks: {{connected_user.languages|join:" and "}} </li>
+		      <li> Privacy: {{connected_user.available}} </li>
+			  {% endfor %}
+			</ul>
+		</div>
+		<button id="sc-test">Say hi to the class</button>
+
+		<div id="translator">
+			<h3>Translator:</h3>
+			
+			<textarea id="query" rows="4" cols="45"></textarea>
+			<select id="language_selector">
+				<option value="en">english</option>
+				<option value="de">deutsch</option>
+				<option value="pt">português</option>
+				<option value="fr">français</option>
+				<option value="ja">日本語</option>
+				<option value="ar">عَرَبيْ</option>
+				<option value="it">italiano</option>
+				<option value="ru">pусский</option>
+				<option value="po">polski</option>
+				<option value="zh-CN">中文</option>
+				<option value="es">español</option>
+				<option value="ko">한국어</option>
+				<option value="nl">nederlands</option>
+				<option value="hi">हिन्दी </option>
+				<option value="el">Ελληνική</option>
+				<option value="ro">română</option>
+			</select>
+		</div>
+
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script src='/_ah/channel/jsapi'></script>
+		<script type="text/javascript" src="http://www.google.com/jsapi"> </script>
+		<script type="text/javascript" src="/static/js/translate.js"></script>
+    <script type="text/javascript" src="/static/js/chat.js"></script>
+    <script type="text/javascript"> SC.addToken('{{token}}');</script>
+  </body>
+</html>

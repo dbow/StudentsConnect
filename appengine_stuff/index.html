@@ -5,102 +5,35 @@
 	<link type="text/css" rel="stylesheet" href="static/css/main.css" />
   </head>
   <body>
-	{% if token %}
-	<h2>Available Users:</h2>
-	<div id="userbox">
-    <ul id="user_list">
-	  {% for connected_user in connected_users %}
-          <li id="{{connected_user.id}}">{{connected_user.name}} {{connected_user.school}}
-                <br/>Speaks: 
-          {% for language in connected_user.languages %}
-          {{language}} and 
-          {% endfor %}
-          <br/>Privacy: {{connected_user.available}} 
-          <br/>
-          <br/>
-          </li>
-	  {% endfor %}
-	</ul>
-	</div>
-        <br/><br/><br/>
-	{% endif %}
-	<form id="connect_form" action="" method="post">
-		Name: <input type="text" name="name" /><br />
-		School: <input type="text" name="school" /><br />
-		Languages spoken <br />
-			<input type="checkbox" name="languages" value="English"/>English
-			<input type="checkbox" name="languages" value="Spanish"/>Spanish
-			<input type="checkbox" name="languages" value="French"/>French
-			<input type="checkbox" name="languages" value="German"/>German
-			<input type="checkbox" name="languages" value="Italian"/>Italian
-			<input type="checkbox" name="languages" value="Dutch"/>Dutch
-			<input type="checkbox" name="languages" value="Japanese"/>Japanese
-                        <!-- Chenger says no		<input type="checkbox" name="languages" value="Chinese"/>Chinese  -->
-			<br />	
-		Allow other connected users to see you?<br />
-		<input type="radio" name="available" value="true" />yes
-		<input type="radio" name="available" value="false" />no
-		<br />
-		<input type="hidden" name="id" id="uid" />
-		<input type="submit" id="connect" value="Connect" />
-	</form>	
-	<button id="sc-test">Test</button>
-		
-   <script type="text/javascript"
-        src="http://www.google.com/jsapi"></script>
-<script type="text/javascript">
-
- // Initialize version 1.0 of Google AJAX API
- google.load("language", "1");
-
- function translate(lang) {
-   var source = document.getElementById("query").value;
-   var len = source.length;
-
-   // Google Language API accepts 500 characters per request 
-   var words = 500;
-
-   for(i=0; i<=(len/words); i++) {
-     google.language.translate (source.substr(i*words, words),
-                 "", lang, function (result) {
-     if (!result.error) {
-	 document.getElementById("query").value = result.translation;
-    } }); }  
-
-  return false;
- }
-
-</script>
-
-
-<div id="translator">
-Translator:
-<textarea id="query" rows="4" cols="45"></textarea>
-
-<select onchange="translate(this.options[this.selectedIndex].value);">
-<option value="en">english</option>
-<option value="de">deutsch</option>
-<option value="pt">português</option>
-<option value="fr">français</option>
-<option value="ja">日本語</option>
-<option value="ar">عَرَبيْ</option>
-<option value="it">italiano</option>
-<option value="ru">pусский</option>
-<option value="po">polski</option>
-<option value="zh-CN">中文</option>
-<option value="es">español</option>
-<option value="ko">한국어</option>
-<option value="nl">nederlands</option>
-<option value="hi">हिन्दी </option>
-<option value="el">Ελληνική</option>
-<option value="ro">română</option>
-</select>
-</div>
-    <script type="text/javascript" src="/static/js/jquery.js"></script>
-    <script src='/_ah/channel/jsapi'></script>
-    <script type="text/javascript" src="/static/js/sc.js"></script>
-    <script type="text/javascript">
-        SC.addToken('{{token}}');
-    </script>
+		<form id="connect_form" action="" method="post">
+			<div class="form_field">
+				Name: 
+					<input type="text" name="name"/>
+			</div>
+			<div class="form_field">
+				School: 
+					<input type="text" name="school"/>
+			</div>
+			<div class="form_field">
+				Languages spoken:
+					<input type="checkbox" name="languages" value="English"/>English
+					<input type="checkbox" name="languages" value="Spanish"/>Spanish
+					<input type="checkbox" name="languages" value="French"/>French
+					<input type="checkbox" name="languages" value="German"/>German
+					<input type="checkbox" name="languages" value="Italian"/>Italian
+					<input type="checkbox" name="languages" value="Dutch"/>Dutch
+					<input type="checkbox" name="languages" value="Japanese"/>Japanese
+					<!-- Chenger says no		<input type="checkbox" name="languages" value="Chinese"/>Chinese  -->
+			</div>
+			<div class="form_field">
+				Allow other connected users to see you?
+					<input type="radio" name="available" value="true" />yes
+					<input type="radio" name="available" value="false" />no
+					<input type="hidden" name="client_id" value={{client_id}} />
+					<input type="submit" id="connect" value="Connect" />
+			</div>
+		</form>	
+	  <script type="text/javascript" src="/static/js/jquery.js"></script>
+	  <script type="text/javascript" src="/static/js/home.js"></script>		
   </body>
 </html>

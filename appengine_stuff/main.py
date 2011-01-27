@@ -16,74 +16,61 @@
 #
 
 import os
+import uuid
+from django.utils import simplejson
 from google.appengine.ext import webapp, db
 from google.appengine.ext.webapp import util, template
 from google.appengine.api import channel
 
 class ConnectedUser(db.Model):
-  chatsession = db.StringProperty()
+  client_id = db.StringProperty()
   name = db.StringProperty()
   school = db.StringProperty()
   languages = db.StringListProperty()
   available = db.BooleanProperty()
+  chat_token = db.StringProperty()
 
 class MainHandler(webapp.RequestHandler):
   def get(self):
-    connected_users = None
-    token = None
-    id=self.request.get("id")
-    if id:
-      token = channel.create_channel(id)
-      created_user = ConnectedUser.all().filter("chatsession=",id)
-      if created_user:
-        connected_users = ConnectedUser.all().fetch(50)
-        
-    template_values = {
-          'connected_users': connected_users,
-          'token': token,
-          }
-
+    template_values = {'client_id': uuid.uuid1()}
     path = os.path.join(os.path.dirname(__file__), 'index.html')
     self.response.out.write(template.render(path, template_values))
 
   def post(self):
-      client_id=self.request.get('id')
+      client_id = self.request.get('client_id')
       new_user = ConnectedUser()
-      new_user.chatsession = client_id
-      new_user.name=self.request.get('name')
-      new_user.school=self.request.get('school')
+      new_user.client_id = client_id
+      new_user.name = self.request.get('name')
+      new_user.school = self.request.get('school')
       new_user.languages = self.request.get('languages', allow_multiple=True)
-      availability = self.request.get('available')
-      if availability == "true":
-          new_user.available=True
-      else:
-          new_user.available=False
+      availability = self.request.get('available') == "true"
       new_user.put()
-      self.redirect('/?id=' + client_id)
+      self.redirect('/chat?client_id=' + client_id)
       
-class UpdateHandler(webapp.RequestHandler):
-    def post(self):
-        gameUpdate = {
-            'name': 'John'
-        }
-        channel.send_message('1' , '{"msg":"' + self.request.get('msg') + '"}')
-        self.response.out.write('{"msg":"hello"}')
+class ChatHandler(webapp.RequestHandler):
+  def get(self):
+    client_id = self.request.get("client_id")
+    if client_id:
+      token = channel.create_channel(client_id)
+      current_user = ConnectedUser.all().filter("client_id = ", client_id).get()
+      if current_user:
+        connected_users = ConnectedUser.all().fetch(50)
+    template_values = {
+      'current_user': current_user,
+      'connected_users': connected_users,
+      'token': token 
+    }
 
-
-class TokenRequestHandler(webapp.RequestHandler):
   def post(self):
-    client_id = self.request.get("id")
-    token = channel.create_channel(client_id)
-    self.response.out.write(token)
-
+    for user in ConnectedUser.all():
+      channel.send_message(user.client_id, self.request.get('msg'))
 
 def main():
-  application = webapp.WSGIApplication([('/', MainHandler),
-                            ('/update', UpdateHandler),
-                          ('/requesttoken', TokenRequestHandler)],
-                                     debug=True)
+  application = webapp.WSGIApplication([
+                    ('/', MainHandler),
+                    ('/chat', ChatHandler)],
+                    debug=True)
   util.run_wsgi_app(application)
-
 
 if __name__ == '__main__':
   main()
