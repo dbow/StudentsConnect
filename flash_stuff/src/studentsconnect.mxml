@@ -145,6 +145,7 @@
 			}
 			
 			private function selectCamera():void {
+				Alert.show('this is foolishness');
 				var camera:Camera = Camera.getCamera(camerasList.selectedIndex.toString());
 				publishVideoBox.attachCamera(camera);
 				nsPub.attachCamera(camera);
