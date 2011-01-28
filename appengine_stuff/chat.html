@@ -7,18 +7,11 @@
   <body>
 		<div id="current_user">
 			<h2> Welcome, {{current_user.name}} </h2>
+			<h2 id="user_id">{{current_user.client_id}}</h2>
 		</div>
+		<h3>Available Users:</h3>
 		<div id="available_users">
-			<h3>Available Users:</h3>
-	    <ul id="user_list">
-			  {% for connected_user in connected_users %}
-		    	<li> {{connected_user.name}} {{connected_user.school}} </li>
-		      <li> Speaks: {{connected_user.languages|join:" and "}} </li>
-		      <li> Privacy: {{connected_user.available}} </li>
-			  {% endfor %}
-			</ul>
 		</div>
-		<button id="sc-test">Say hi to the class</button>
 
 		<div id="translator">
 			<h3>Translator:</h3>

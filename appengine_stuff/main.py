@@ -17,18 +17,20 @@
 
 import os
 import uuid
+import datetime
+import logging
 from django.utils import simplejson
 from google.appengine.ext import webapp, db
 from google.appengine.ext.webapp import util, template
 from google.appengine.api import channel
 
 class ConnectedUser(db.Model):
-  client_id = db.StringProperty()
-  name = db.StringProperty()
-  school = db.StringProperty()
-  languages = db.StringListProperty()
-  available = db.BooleanProperty()
-  chat_token = db.StringProperty()
+  client_id    = db.StringProperty()
+  name         = db.StringProperty()
+  school       = db.StringProperty()
+  languages    = db.StringListProperty()
+  available    = db.BooleanProperty()
+  last_present = db.DateTimeProperty()
 
 class MainHandler(webapp.RequestHandler):
   def get(self):
@@ -38,12 +40,11 @@ class MainHandler(webapp.RequestHandler):
 
   def post(self):
       client_id = self.request.get('client_id')
-      new_user = ConnectedUser()
-      new_user.client_id = client_id
-      new_user.name = self.request.get('name')
-      new_user.school = self.request.get('school')
-      new_user.languages = self.request.get('languages', allow_multiple=True)
-      availability = self.request.get('available') == "true"
+      new_user = ConnectedUser( client_id = self.request.get('client_id'),
+                                name      = self.request.get('name'),
+                                school    = self.request.get('school'),
+                                languages = self.request.get_all('languages'),
+                                available = self.request.get('available') == "true")
       new_user.put()
       self.redirect('/chat?client_id=' + client_id)
       
@@ -51,9 +52,9 @@ class ChatHandler(webapp.RequestHandler):
   def get(self):
     client_id = self.request.get("client_id")
     if client_id:
-      token = channel.create_channel(client_id)
       current_user = ConnectedUser.all().filter("client_id = ", client_id).get()
       if current_user:
+        token = channel.create_channel(client_id)
         connected_users = ConnectedUser.all().fetch(50)
     template_values = {
       'current_user': current_user,
@@ -61,14 +62,32 @@ class ChatHandler(webapp.RequestHandler):
       'token': token 
     }
 
+    path = os.path.join(os.path.dirname(__file__), 'chat.html')
+    self.response.out.write(template.render(path, template_values))
+
   def post(self):
     for user in ConnectedUser.all():
       channel.send_message(user.client_id, self.request.get('msg'))
 
+class PresenceHandler(webapp.RequestHandler):
+  def post(self):
+    client_id = self.request.get('client_id')
+    present_user = ConnectedUser.all().filter("client_id = ", client_id).get()
+    if present_user:
+      present_user.last_present = datetime.datetime.now()
+      present_user.put()
+      
+    present_users = ConnectedUser.all().filter("last_present > ", 
+                                                datetime.datetime.now() - datetime.timedelta(seconds=6)).fetch(50)
+    for user in present_users: # only notify present users?
+      present_users_info = map(lambda u: {"client_id": u.client_id, "name": u.name}, present_users)
+      channel.send_message(user.client_id, simplejson.dumps(present_users_info))
+
 def main():
   application = webapp.WSGIApplication([
                     ('/', MainHandler),
-                    ('/chat', ChatHandler)],
+                    ('/chat', ChatHandler),
+                    ('/presence', PresenceHandler)],
                     debug=True)
   util.run_wsgi_app(application)
 
