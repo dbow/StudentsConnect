@@ -38,11 +38,11 @@ class MainHandler(webapp.RequestHandler):
     self.response.out.write(template.render(path, template_values))
 
   def post(self):
-      client_id = self.request.get('client_id')
-      new_user = ConnectedUser( client_id = self.request.get('client_id'),
-                                name      = self.request.get('name'),
-                                school    = self.request.get('school'),
-                                language = self.request.get('language') )
+      client_id = escape(self.request.get('client_id'))
+      new_user = ConnectedUser( client_id = client_id,
+                                name      = escape(self.request.get('name')),
+                                school    = escape(self.request.get('school')),
+                                language = escape(self.request.get('language')) )
       new_user.put()
       self.redirect('/chat?client_id=' + client_id)
       
@@ -86,6 +86,20 @@ class PresenceHandler(webapp.RequestHandler):
 										  "school": u.school, 
 										  "language": u.language}, present_users)
       channel.send_message(user.client_id, simplejson.dumps(present_users_info))
+
+#Escape form entries
+def escape(value):
+  html_escape_table = {
+    "&": "&amp;",
+    '"': "&quot;",
+    "'": "&apos;",
+    ">": "&gt;",
+    "<": "&lt;",
+    }
+
+  """Produce entities within text."""
+  return "".join(html_escape_table.get(c,c) for c in value)
+
 
 def main():
   application = webapp.WSGIApplication([
