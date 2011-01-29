@@ -1,0 +1,18 @@
+application: studentsconnect
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /static
+  static_dir: static
+
+- url: /css
+  static_dir: static/css
+  
+- url: /flash/(studentsconnect.swf|AC_OETags.js|playerProductInstall.swf)
+  static_files: flash/bin-debug/\1
+  upload: flash/bin-debug/(studentsconnect.swf|AC_OETags.js|playerProductInstall.swf)
+  
+- url: .*
+  script: main.py

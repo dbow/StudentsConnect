@@ -1,0 +1,34 @@
+.input {
+	display:block;
+}
+#userbox {
+	border:5px ridge green;
+}
+@font-face {
+      font-family: "DIN-Bold";
+      src: url("http://www.brutelabs.org/files/fonts/DIN-Bold.ttf");
+    }
+@font-face {
+      font-family: "DIN-Reg";
+      src: url("http://www.brutelabs.org/files/fonts/DIN-Reg.ttf");
+}
+.DIN-Bold { font-family: "DIN-Bold", serif }
+.DIN-Reg { font-family: "DIN-Reg", serif }
+body { 
+	margin: 0px; 
+	background: #00B5E5;
+	color: #FFFFFF;
+	text-align: center;
+	font-family: "DIN-Reg", serif;
+	 }
+h1 {
+	font-family: "DIN-Bold", serif;
+}
+a:link {
+	color:#FFFFFF;
+	text-decoration:underline;
+	}
+.translator {
+	display:block;
+	position:center;
+}
