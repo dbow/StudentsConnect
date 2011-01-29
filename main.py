@@ -28,8 +28,7 @@ class ConnectedUser(db.Model):
   client_id    = db.StringProperty()
   name         = db.StringProperty()
   school       = db.StringProperty()
-  languages    = db.StringListProperty()
-  available    = db.BooleanProperty()
+  language    = db.StringProperty()
   last_present = db.DateTimeProperty()
 
 class MainHandler(webapp.RequestHandler):
@@ -43,8 +42,7 @@ class MainHandler(webapp.RequestHandler):
       new_user = ConnectedUser( client_id = self.request.get('client_id'),
                                 name      = self.request.get('name'),
                                 school    = self.request.get('school'),
-                                languages = self.request.get_all('languages'),
-                                available = self.request.get('available') == "true")
+                                language = self.request.get('languages') )
       new_user.put()
       self.redirect('/chat?client_id=' + client_id)
       

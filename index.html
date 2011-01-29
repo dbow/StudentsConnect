@@ -17,20 +17,19 @@
 					<input type="text" name="school"/>
 			</div>
 			<div class="form_field">
-				Languages spoken:
-					<input type="checkbox" name="languages" value="English"/>English
-					<input type="checkbox" name="languages" value="Spanish"/>Spanish
-					<input type="checkbox" name="languages" value="French"/>French
-					<input type="checkbox" name="languages" value="German"/>German
-					<input type="checkbox" name="languages" value="Italian"/>Italian
-					<input type="checkbox" name="languages" value="Dutch"/>Dutch
-					<input type="checkbox" name="languages" value="Japanese"/>Japanese
-					<!-- Chenger says no		<input type="checkbox" name="languages" value="Chinese"/>Chinese  -->
+				Language spoken:
+					<select name="language">
+						<option value="English"/>English</option>
+						<option value="Spanish"/>Spanish</option>
+						<option value="French"/>French</option>
+						<option value="German"/>German</option>
+						<option value="Italian"/>Italian</option>
+						<option value="Dutch"/>Dutch</option>
+						<option value="Japanese"/>Japanese</option>
+						<option value="Chinese"/>Chinese</option>
+					</select>
 			</div>
 			<div class="form_field">
-				Allow other connected users to see you?
-					<input type="radio" name="available" value="true" />yes
-					<input type="radio" name="available" value="false" />no
 					<input type="hidden" name="client_id" value={{client_id}} />
 					<input type="submit" id="connect" value="Connect" />
 			</div>
