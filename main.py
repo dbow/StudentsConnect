@@ -42,7 +42,7 @@ class MainHandler(webapp.RequestHandler):
       new_user = ConnectedUser( client_id = self.request.get('client_id'),
                                 name      = self.request.get('name'),
                                 school    = self.request.get('school'),
-                                language = self.request.get('languages') )
+                                language = self.request.get('language') )
       new_user.put()
       self.redirect('/chat?client_id=' + client_id)
       
@@ -81,7 +81,10 @@ class PresenceHandler(webapp.RequestHandler):
     present_users = ConnectedUser.all().filter("last_present > ", 
                                                 datetime.datetime.now() - datetime.timedelta(seconds=6)).fetch(50)
     for user in present_users: # only notify present users?
-      present_users_info = map(lambda u: {"client_id": u.client_id, "name": u.name}, present_users)
+      present_users_info = map(lambda u: {"client_id": u.client_id, 
+										  "name": u.name, 
+										  "school": u.school, 
+										  "language": u.language}, present_users)
       channel.send_message(user.client_id, simplejson.dumps(present_users_info))
 
 def main():

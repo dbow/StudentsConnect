@@ -8,26 +8,16 @@
 	<h1>studentsConnect</h1>
 	<h4>a <a href="www.brutelabs.org">BRUTE LABS</a> application</h4>
 	
+	<div id="current_user">
+		<p> Welcome, {{current_user.name}} </p>
+		<h3>Available Users:</h3>
+		<table id="available_users">
+		</table>
+	</div>
+	
 	<!-- To Fix: Unable to click camera permissions box with overflow:hidden in Mac Firefox-->
 	
 	{% include "flash/bin-debug/studentsconnect.html" %}
-	
-		<div id="current_user">
-			<h2> Welcome, {{current_user.name}} </h2>
-			<h4 id="user_id">{{current_user.client_id}}</h4>
-		</div>
-		<h3>Available Users:</h3>
-		<div id="available_users">
-		</div>
-		
-		<form id="flash_test">
-			<input type="text" id="self_id"></input>
-			<input type="text" id="target_id"></input>
-			<input type="text" id="target_name"></input>
-			<input type="text" id="target_school"></input>
-			<input type="text" id="target_language"></input>
-			<input type="submit" />
-		</form>
 
 		<div id="translator">
 			<h3>Translator:</h3>

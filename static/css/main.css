@@ -1,9 +1,3 @@
-.input {
-	display:block;
-}
-#userbox {
-	border:5px ridge green;
-}
 @font-face {
       font-family: "DIN-Bold";
       src: url("http://www.brutelabs.org/files/fonts/DIN-Bold.ttf");
@@ -21,6 +15,12 @@ body {
 	text-align: center;
 	font-family: "DIN-Reg", serif;
 	 }
+.input {
+	display:block;
+}
+#userbox {
+	border:5px ridge green;
+}
 h1 {
 	font-family: "DIN-Bold", serif;
 }
@@ -31,4 +31,13 @@ a:link {
 .translator {
 	display:block;
 	position:center;
+}
+#available_users {
+	border:10px #CCCCCC;
+	background-color:#FFFFFF;
+	color:#00B5E5;
+	display: inline-table;
+}
+#available_users tr.alt {
+	background-color:#CCCCCC;
 }
