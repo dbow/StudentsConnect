@@ -16,7 +16,7 @@
 	
 	<mx:HBox id="VideoArea">
 		<mx:VideoDisplay id="playVideoBox"
-						 creationComplete="localCreated(playVideoBox, VideoArea)"
+						 creationComplete="localCreated()"
 						 height="240"
 						 width="320"
 						 backgroundAlpha="0"
@@ -26,7 +26,6 @@
 						 cornerRadius="11"
 						 borderColor="#00B5E5"/>
 		<mx:VideoDisplay id="publishVideoBox"
-						 creationComplete="localCreated(publishVideoBox, VideoArea)"
 						 height="120"
 						 width="160"
 						 backgroundAlpha="0"
@@ -71,8 +70,8 @@
 			[Bindable] private var nc:NetConnection;
 			[Bindable] private var nsPub:NetStream;
 			[Bindable] private var nsPlay:NetStream;
-			private var publishVideo:Video;
 			private var playVideo:Video;
+			private var current_camera:Camera;
 			private var isValid:Boolean;
 			private var myChatID:String;
 			private var targetChatID:String;
@@ -107,33 +106,24 @@
 			
 			
 			private function selectCamera():void {
-				var current_camera:String = null;
+				var camera_index:String = null;
 				if (camerasList.selectedIndex.toString() != '-1') {
-					current_camera = camerasList.selectedIndex.toString();
+					camera_index = camerasList.selectedIndex.toString();
 				}
-				var camera:Camera = Camera.getCamera(current_camera);
-				publishVideoBox.attachCamera(camera);
-				nsPub.attachCamera(camera);
+				debug('select camera');
+				current_camera = Camera.getCamera(camera_index);
+				publishVideoBox.attachCamera(current_camera);
 			}
 			
 			
 			private function connectToTarget(self_id:String,target_id:String,target_name:String,target_school:String,target_language:String):void {
 				
-				myChatID = self_id;
-				targetChatID = target_id;
 				chat_target.text = "Name: " + target_name + " | School: " + target_school + " | Language: " + target_language;			
-				publish(myChatID)
-				play(targetChatID)
-				debug(String(nc));
+				publish(self_id)
+				play(self_id) //Change to 'target_id' after debugging!!!
+				debug("publish: " + self_id + ", play: " + target_id)
 				
 			}
-			
-			
-			private function generateChatID():void {
-				myChatID = UIDUtil.createUID();
-			}
-			
-			
 			
 			
 			
@@ -155,9 +145,10 @@
 					nsPub.addEventListener(IOErrorEvent.IO_ERROR, streamErrorHandler, false, 0, true);
 					nsPub.addEventListener(AsyncErrorEvent.ASYNC_ERROR, streamErrorHandler, false, 0, true);
 					
+					debug('publish -' + name);
 					nsPub.publish(name);
 					nsPub.attachAudio(Microphone.getMicrophone(-1));
-					publishVideo.attachNetStream(nsPub);
+					nsPub.attachCamera(current_camera);
 				}
 			}
 			
@@ -168,6 +159,7 @@
 					nsPlay.addEventListener(IOErrorEvent.IO_ERROR, streamErrorHandler, false, 0, true);
 					nsPlay.addEventListener(AsyncErrorEvent.ASYNC_ERROR, streamErrorHandler, false, 0, true);
 					nsPlay.play(name);
+					debug('play - ' + name);
 					
 					playVideo.attachNetStream(nsPlay);
 				}
@@ -180,11 +172,9 @@
 					nsPlay.close();
 					nsPlay = null;
 				}
-				publishVideo.clear();
 				playVideo.clear();
-				playVideoBox.attachCamera(null);
 				chat_target.text = "";
-				ExternalInterface.call('sendToJavaScript', 'chat ended!');
+				ExternalInterface.call('alert', 'chat ended!');
 			}
 			
 			private function netStatusHandler(event:NetStatusEvent):void {
@@ -219,22 +209,23 @@
 					log.text += msg + '\n';
 			}
 			
-			private function localCreated(video_box:VideoDisplay, video_area:HBox):void {
+			
+			private function localCreated(): void {
+				
 				var ui:UIComponent = new UIComponent();
-				var video:Video;
-				video = new Video();
 				ui.width = 320;
 				ui.height = 240;
-				if (video_box == playVideoBox) {
-					playVideo = video;
-					ui.addChild(playVideo);
-				}
-				else {
-					publishVideo = video;
-					ui.addChild(publishVideo);
-				}
-				video_area.addChild(ui);
+
+				playVideo = new Video(320, 240);
+				playVideo.width = 320;
+				playVideo.height = 240;
+				ui.addChild(playVideo);
+				debug('localcreated -playvideo');
+								
+				this.playVideoBox.addChild(ui);
 			}
+			
+			
 			
 			private function showHideLog(log:TextArea):void {
 				if (log.visible == true) {
