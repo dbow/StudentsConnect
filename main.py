@@ -85,7 +85,12 @@ class PresenceHandler(webapp.RequestHandler):
 										  "name": u.name, 
 										  "school": u.school, 
 										  "language": u.language}, present_users)
-      channel.send_message(user.client_id, simplejson.dumps(present_users_info))
+      channel.send_message(user.client_id, simplejson.dumps({"present_users": present_users_info}))
+
+class ChatRequestHandler(webapp.RequestHandler):
+  def post(self):
+    client_id = self.request.get('client_id')
+    channel.send_message(client_id, simplejson.dumps({"chat_request": "Would you like to chat with me?"}));
 
 #Escape form entries
 def escape(value):
@@ -105,7 +110,8 @@ def main():
   application = webapp.WSGIApplication([
                     ('/', MainHandler),
                     ('/chat', ChatHandler),
-                    ('/presence', PresenceHandler)],
+                    ('/presence', PresenceHandler),
+                    ('/request_chat', ChatRequestHandler)],
                     debug=True)
   util.run_wsgi_app(application)
 
