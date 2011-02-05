@@ -119,9 +119,9 @@
 			private function connectToTarget(self_id:String,target_id:String,target_name:String,target_school:String,target_language:String):void {
 				
 				chat_target.text = "Name: " + target_name + " | School: " + target_school + " | Language: " + target_language;			
-				publish(self_id)
-				play(self_id) //Change to 'target_id' after debugging!!!
-				debug("publish: " + self_id + ", play: " + target_id)
+				publish(self_id);
+				play(target_id);
+				debug("publish: " + self_id + ", play: " + target_id);
 				
 			}
 			
@@ -216,9 +216,12 @@
 				ui.width = 320;
 				ui.height = 240;
 
-				playVideo = new Video(320, 240);
-				playVideo.width = 320;
-				playVideo.height = 240;
+				playVideo = new Video();
+				playVideo.width = 312;
+				playVideo.height = 232;
+				playVideo.x = 4;
+				playVideo.y = 4;
+				
 				ui.addChild(playVideo);
 				debug('localcreated -playvideo');
 								
