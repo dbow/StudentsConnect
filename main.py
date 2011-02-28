@@ -90,7 +90,15 @@ class PresenceHandler(webapp.RequestHandler):
 class ChatRequestHandler(webapp.RequestHandler):
   def post(self):
     client_id = self.request.get('client_id')
-    channel.send_message(client_id, simplejson.dumps({"chat_request": "Would you like to chat with me?"}));
+    requestor_id = self.request.get('requestor_id')
+    channel.send_message(client_id, simplejson.dumps({"chat_request": requestor_id}))
+    print "ChatRequestHandler"
+
+class ChatConfirmationHandler(webapp.RequestHandler):
+  def post(self):
+	client_id = self.request.get('client_id')
+	confirm_id = self.request.get('confirm_id')
+	channel.send_message(client_id, simplejson.dumps({"confirmed_request": confirm_id}))
 
 #Escape form entries
 def escape(value):
@@ -111,7 +119,8 @@ def main():
                     ('/', MainHandler),
                     ('/chat', ChatHandler),
                     ('/presence', PresenceHandler),
-                    ('/request_chat', ChatRequestHandler)],
+                    ('/request_chat', ChatRequestHandler),
+                    ('/confirm_chat',ChatConfirmationHandler)],
                     debug=True)
   util.run_wsgi_app(application)
 
