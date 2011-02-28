@@ -41,3 +41,6 @@ a:link {
 #available_users tr.alt {
 	background-color:#CCCCCC;
 }
+.hidden {
+	visibility:hidden;
+}

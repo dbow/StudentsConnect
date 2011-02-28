@@ -174,7 +174,7 @@
 				}
 				playVideo.clear();
 				chat_target.text = "";
-				ExternalInterface.call('alert', 'chat ended!');
+				ExternalInterface.call('chatEnded');
 			}
 			
 			private function netStatusHandler(event:NetStatusEvent):void {
@@ -182,9 +182,7 @@
 				switch (event.info.code) {
 					case 'NetConnection.Connect.Success':
 						break;
-					case 'NetConnection.Connect.Failed':
-					case 'NetConnection.Connect.Reject':
-					case 'NetConnection.Connect.Closed':
+					default:
 						nc = null;
 						closeStream();
 						break;

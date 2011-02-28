@@ -78,6 +78,7 @@
 							        target_row_ids[1], //school
 							        target_row_ids[2]); //language
     SC.log("connectToTarget()");
+    $("#available_users").addClass('hidden');
   }
   
   function updatePresentUsersList(present_users){
@@ -108,6 +109,11 @@
 	      connectToTarget($(this).parent().attr("id"));
 	      return false;
         });
+  }
+
+  function chatEnded(){
+	SC.log("chatEnded()");
+	$("#available_users").removeClass('hidden');
   }
 
   SC.addToken = function (token) {
